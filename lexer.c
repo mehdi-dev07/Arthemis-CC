@@ -27,11 +27,9 @@ bool check_if_identifier(char* word, int n)
 
 struct tokenStream* lexing(char* input, int n)
 {
-    Token *tokens;
-    struct tokenStream *stream;
+    struct tokenStream *stream = (struct tokenStream*)malloc(sizeof(struct tokenStream));
     tokenStream_init(stream);
 
-    tokens = (Token*)malloc(10 * sizeof(Token));
     char* token = (char*)malloc(20* sizeof(char));
     int i,j;
     int len;
@@ -40,39 +38,66 @@ struct tokenStream* lexing(char* input, int n)
         {
             if(input[i] == '(')
             {
-                tokenStream_push(stream, punctuation, "(");
+                TokenValue value = {
+                    .punctuation = TOKEN_LPAREN
+                };
+                tokenStream_push(stream, punctuation, "(", value);
             }
             if(input[i] == ')')
             {
-                tokenStream_push(stream, punctuation, ")");
+                TokenValue value = {
+                    .punctuation = TOKEN_RPAREN
+                };
+                tokenStream_push(stream, punctuation, ")", value);
             }
             if(input[i] == '{')
             {
-                tokenStream_push(stream, punctuation, "{");
+                TokenValue value = {
+                    .punctuation = TOKEN_LBRACE
+                };
+                tokenStream_push(stream, punctuation, "{", value);
             }
             if(input[i] == '}')
             {
-                tokenStream_push(stream, punctuation, "}");
+                TokenValue value = {
+                    .punctuation = TOKEN_RBRACE
+                };
+                tokenStream_push(stream, punctuation, "}", value);
             }
             if(input[i] == '+')
             {
-                tokenStream_push(stream, operation, "+");
+                TokenValue value = {
+                    .operation = TOKEN_PLUS
+                };
+                tokenStream_push(stream, operation, "+", value);
             }
             if(input[i] == '-')
             {
-                tokenStream_push(stream, operation, "-");
+                TokenValue value = {
+                    .operation = TOKEN_MINUS
+                };
+                tokenStream_push(stream, operation, "-", value);
             }
             if(input[i] == '*')
             {
-                tokenStream_push(stream, operation, "*");
+                TokenValue value = {
+                    .operation = TOKEN_STAR
+                };
+                tokenStream_push(stream, operation, "*", value);
             }
             if(input[i] == '/')
             {
-                tokenStream_push(stream, operation, "/");
+                TokenValue value = {
+                    .operation = TOKEN_SLASH
+                };
+                tokenStream_push(stream, operation, "/", value);
             }
             if(input[i] == '=' && input[i+1] == '=')
             {
-                tokenStream_push(stream, operation, "==");
+                TokenValue value = {
+                    .operation = TOKEN_EQUAL_EQUAL
+                };
+                tokenStream_push(stream, operation, "==", value);
             }
 
             if(input[i] == ' ')
@@ -87,37 +112,70 @@ struct tokenStream* lexing(char* input, int n)
             i=j;
 
             if(check_if_identifier(token, len)){
-                tokenStream_push(stream, identifier, token);
+                TokenValue value = {
+                    .identifier = token
+                };
+                tokenStream_push(stream, identifier, token, value);
             }
             if(strcmp(token, "int")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_INT
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "return")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_RETURN
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "char")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_CHAR
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "double")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_DOUBLE
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "float")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_FLOAT
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "if")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_IF
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "else")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_ELSE
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "while")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_WHILE
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "do")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_DO
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
             if(strcmp(token, "for")){
-                tokenStream_push(stream, keyword, token);
+                TokenValue value = {
+                    .keyword = TOKEN_FOR
+                };
+                tokenStream_push(stream, keyword, token, value);
             }
 
         }

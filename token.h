@@ -27,7 +27,7 @@ enum KEYWORDS {
     TOKEN_SIZEOF,
     TOKEN_EXTERN,
     TOKEN_CONST,
-}KEYWORD;
+};
 
 enum PUNCTUATION
 {
@@ -41,9 +41,9 @@ enum PUNCTUATION
     TOKEN_COMMA,
     TOKEN_COLON,
     TOKEN_QUESTION,
-}PUNCTUATION;
+};
 
-enum OPERATOR
+enum OPERATION
 {
     TOKEN_PLUS,
     TOKEN_MINUS,
@@ -67,7 +67,7 @@ enum OPERATOR
     TOKEN_PIPE,
     TOKEN_TILDE,
     TOKEN_CARET,
-}OPERATION;
+};
 
 typedef enum category
 {
@@ -78,8 +78,18 @@ typedef enum category
     identifier
 }category;
 
+typedef union TokenValue
+{
+    enum KEYWORDS keyword;
+    enum PUNCTUATION punctuation;
+    enum OPERATION operation;
+    int constant;
+    char *identifier;
+} TokenValue;
+
 typedef struct Token{
     enum category type;
+    TokenValue value;
     char *lexeme;
 } Token;
 
@@ -90,7 +100,7 @@ typedef struct tokenStream
     int size;
 } TokenStream;
 
-void tokenStream_push(TokenStream *s, category type, const char *lexeme);
+void tokenStream_push(TokenStream *s, category type, const char *lexeme, TokenValue value);
 void tokenStream_free(TokenStream *s);
 void tokenStream_init(TokenStream *s);
 

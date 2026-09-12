@@ -51,6 +51,6 @@ int main(int argc, char *argv[])
     }
 
     free(input);
-    tokenStream_free(&tokens);
+    tokenStream_free(tokens);
     return 0;
 }
